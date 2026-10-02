@@ -96,7 +96,7 @@ function installPage(url, version, hosts, sha256, repo) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Video contents bookmarklet</title>
+<title>Practice Video ToC bookmarklet</title>
 <style>
   :root { --ebony:#1B1815; --raised:#2A2521; --ivory:#EDE4CF; --dim:#AFA592; --mid:#CFC5B0; --baize:#5C8A6A; --rule:rgba(237,228,207,.14); }
   html { background:var(--ebony); }
@@ -124,7 +124,7 @@ function installPage(url, version, hosts, sha256, repo) {
 </head>
 <body>
 <main>
-  <h1>Video contents bookmarklet</h1>
+  <h1>Practice Video ToC bookmarklet</h1>
   <p class="version">Version ${version}. Adds a clickable table of contents, keyboard shortcuts and optional MIDI control to the practice session videos.</p>
 
   <h2>1. Show your bookmarks bar</h2>
