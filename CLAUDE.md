@@ -196,6 +196,13 @@ a security boundary. Rules:
   in this repo). It embeds the gist id, so only post that URL in the members-only forum. Static: each release =
   `npm run deploy` (build + `npx netlify-cli deploy`; needs a one-time `npx netlify-cli login`). The Netlify CLI is
   pinned in `deploy.js` and run via npx — it is never a project dependency.
+  **How the install page is deployed, explicitly:** it is a *generated* file (`dist/` is gitignored) that is **not
+  revision-controlled anywhere** — not in this repo, not in a repo of its own. The Netlify site is **not connected to
+  GitHub** and there is **no CI/CD**: every publish is a manual `npm run deploy` from a developer machine that has the
+  `.env` values, pushing the freshly built `dist/install.html` (plus a `_headers` file) with the Netlify CLI. The
+  page is therefore reproducible from a commit + `.env`, and "what is live" = "the last manual deploy", which is why
+  the release checklist says to deploy right after bumping the version. (Netlify keeps its own deploy history, which
+  is the only record of past versions.)
 * Version: `package.json` → stamped into the panel title tooltip (`__VERSION__` replaced by build.js) and the install page.
   Bump it for every release.
 * `dist/` is **gitignored** (fully derived; rebuild with `npm run build`). Distribution channel TBD (release asset or similar).
