@@ -25,4 +25,17 @@ function requireEnv(names, hint) {
   return out;
 }
 
-module.exports = { loadDotEnv, requireEnv };
+// Build identifier from git: "<version>+<short-hash>" plus "-dirty" when the working tree has
+// uncommitted changes, or "+unknown" outside a git checkout. Deterministic for clean builds.
+function buildId(version) {
+  let hash = 'unknown', dirty = false;
+  try {
+    const { execFileSync } = require('child_process');
+    const opts = { cwd: __dirname, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] };
+    hash = execFileSync('git', ['rev-parse', '--short', 'HEAD'], opts).trim();
+    dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], opts).trim().length > 0;
+  } catch (err) { /* not a git checkout, or git missing */ }
+  return version + '+' + hash + (dirty ? '-dirty' : '');
+}
+
+module.exports = { loadDotEnv, requireEnv, buildId };

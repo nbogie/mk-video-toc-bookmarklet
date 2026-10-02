@@ -206,8 +206,12 @@ a security boundary. Rules:
   page is therefore reproducible from a commit + `.env`, and "what is live" = "the last manual deploy", which is why
   the release checklist says to deploy right after bumping the version. (Netlify keeps its own deploy history, which
   is the only record of past versions.)
-* Version: `package.json` → stamped into the panel title tooltip (`__VERSION__` replaced by build.js) and the install page.
-  Bump it for every release.
+* Version: `package.json` holds the human version. The build stamps a **build id** `<version>+<git short hash>`,
+  with `-dirty` appended when the working tree has uncommitted changes (`buildId()` in `env.js`), into the panel
+  title tooltip (`__VERSION__`), the install page, and `dist/version.txt`. So every build is distinguishable with no
+  manual counting, clean builds are reproducible, and **`npm run deploy` refuses a `-dirty` or `+unknown` build** —
+  commit first, then deploy, so the live page always corresponds to a commit. Bump `package.json` when you'd call it
+  a new version.
 * `dist/` is **gitignored** (fully derived; rebuild with `npm run build`). Distribution channel TBD (release asset or similar).
 * `test/toc.test.js`: Node built-in test runner (`node:test`), no test deps.
 * `example-inputs/`: **synthetic** fixtures (a detective agency run by forest animals — no course content, no music) that mirror the five real community TOC *syntaxes* (`001`-`003-old-style.md`:

@@ -17,7 +17,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { minify } = require('terser');
 
-const { requireEnv } = require('./env.js');
+const { requireEnv, buildId } = require('./env.js');
 
 // Build-time configuration (see .env.example). Validated so a typo can't ship.
 function loadConfig() {
@@ -38,8 +38,9 @@ async function main() {
   const toc = fs.readFileSync(path.join(SRC, 'toc.js'), 'utf8');
   const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
   const cfg = loadConfig();
+  const version = buildId(pkg.version);
   const main = fs.readFileSync(path.join(SRC, 'bookmarklet.js'), 'utf8')
-    .replace('__VERSION__', pkg.version)
+    .replace('__VERSION__', version)
     .replace('__GIST_USER__', cfg.user)
     .replace('__GIST_ID__', cfg.id)
     .replace('__ALLOWED_HOSTS__', cfg.hosts.join(','));
@@ -74,10 +75,12 @@ async function main() {
   const minUrl = 'javascript:' + encodeURI(min).replace(/#/g, '%23');
   fs.writeFileSync(path.join(DIST, 'bookmarklet.min.txt'), minUrl + '\n');
 
-  fs.writeFileSync(path.join(DIST, 'install.html'), installPage(url, pkg.version, cfg.hosts, sha256, pkg.repository));
+  fs.writeFileSync(path.join(DIST, 'install.html'), installPage(url, version, cfg.hosts, sha256, pkg.repository));
+  fs.writeFileSync(path.join(DIST, 'version.txt'), version + '\n');
 
   console.log('dist/bookmarklet.js      ' + combined.length + ' bytes');
   console.log('dist/bookmarklet.min.js  ' + min.length + ' bytes');
+  console.log('build id                 ' + version + (version.endsWith('-dirty') ? '  (uncommitted changes: not deployable)' : ''));
   console.log('dist/bookmarklet.txt     ' + url.length + ' bytes  (default: unminified)');
   console.log('dist/bookmarklet.min.txt ' + minUrl.length + ' bytes  (optional: minified)');
 }

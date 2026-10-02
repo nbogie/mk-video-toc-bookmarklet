@@ -17,11 +17,18 @@ const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'ut
 const src = path.join(__dirname, 'dist', 'install.html');
 if (!fs.existsSync(src)) { console.error('dist/install.html missing — run npm run build'); process.exit(1); }
 
+const version = fs.existsSync(path.join(__dirname, 'dist', 'version.txt'))
+  ? fs.readFileSync(path.join(__dirname, 'dist', 'version.txt'), 'utf8').trim() : pkg.version;
+if (version.endsWith('-dirty') || version.endsWith('+unknown')) {
+  console.error('Refusing to deploy build ' + version + ': commit your changes first, so the live page corresponds to a commit.');
+  process.exit(1);
+}
+
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mk-toc-site-'));
 fs.copyFileSync(src, path.join(dir, 'index.html'));
 fs.writeFileSync(path.join(dir, '_headers'), '/*\n  X-Robots-Tag: noindex, nofollow\n  Referrer-Policy: no-referrer\n');
 
-execFileSync('npx', ['-y', NETLIFY_CLI, 'deploy', '--prod', '--dir=' + dir, '--site=' + SITE_ID, '--message', 'v' + pkg.version + ' install page'],
+execFileSync('npx', ['-y', NETLIFY_CLI, 'deploy', '--prod', '--dir=' + dir, '--site=' + SITE_ID, '--message', 'v' + version + ' install page'],
   { stdio: 'inherit' });
 fs.rmSync(dir, { recursive: true, force: true });
-console.log('Published v' + pkg.version + ' to ' + env.INSTALL_PAGE_URL);
+console.log('Published v' + version + ' to ' + env.INSTALL_PAGE_URL);
