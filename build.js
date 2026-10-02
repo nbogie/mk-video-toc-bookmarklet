@@ -147,7 +147,7 @@ function installPage(url, version, hosts, sha256, repo) {
 
   <h2>Install</h2>
   <p class="mobile">On a phone or tablet there is no bookmarks bar to drag to. Use "Copy the text instead" below, then paste it as a new bookmark's address.</p>
-  <p class="bar">Show your bookmarks bar first: Chrome <span><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd></span> (Windows) or <span><kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd></span> (Mac); Safari: View → Show Favorites Bar.</p>
+  <p class="bar">Show your bookmarks bar first. Chrome on a Mac: View → Always Show Bookmarks Bar. Chrome on Windows: the ⋮ menu → Bookmarks and lists → Show bookmarks bar. Safari: View → Show Favorites Bar.</p>
   <a class="drag" href="${href}" onclick="return false" title="Drag me to the bookmarks bar">MK Video ToC bookmarklet</a>
   <p class="hint">Drag the box onto your bookmarks bar. Clicking it here does nothing.</p>
 
