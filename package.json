@@ -1,0 +1,20 @@
+{
+  "name": "mk-video-toc-bookmarklet",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bookmarklet adding a timestamped table of contents, keyboard and MIDI navigation to Wistia course videos",
+  "scripts": {
+    "build": "node build.js",
+    "test": "node --test",
+    "check": "npm audit --audit-level=low && npm ls --all && node --test",
+    "deploy": "npm run build && node deploy.js"
+  },
+  "devDependencies": {
+    "terser": "^5.36.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nbogie/mk-video-toc-bookmarklet"
+  },
+  "license": "MIT"
+}
