@@ -200,6 +200,9 @@ a security boundary. Rules:
   revision-controlled anywhere** — not in this repo, not in a repo of its own. The Netlify site is **not connected to
   GitHub** and there is **no CI/CD**: every publish is a manual `npm run deploy` from a developer machine that has the
   `.env` values, pushing the freshly built `dist/install.html` (plus a `_headers` file) with the Netlify CLI. The
+  Netlify's free-plan "built with Netlify" badge and "HUD" (both inject third-party script into the page at the
+  edge) are **disabled** on the site (`built_with_badge_enabled: false`, `hud_enabled: false` via the API) — keep
+  them off; the install page must carry no third-party code. The
   page is therefore reproducible from a commit + `.env`, and "what is live" = "the last manual deploy", which is why
   the release checklist says to deploy right after bumping the version. (Netlify keeps its own deploy history, which
   is the only record of past versions.)

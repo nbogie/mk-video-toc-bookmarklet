@@ -96,83 +96,114 @@ function installPage(url, version, hosts, sha256, repo) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Practice Video ToC bookmarklet</title>
+<meta name="color-scheme" content="dark">
+<title>MK Practice Video ToC Bookmarklet</title>
 <style>
-  :root { --ebony:#1B1815; --raised:#2A2521; --ivory:#EDE4CF; --dim:#AFA592; --mid:#CFC5B0; --baize:#5C8A6A; --rule:rgba(237,228,207,.14); }
+  :root { --ebony:#1B1815; --raised:#2A2521; --ivory:#EDE4CF; --mid:#CFC5B0; --dim:#AFA592; --baize:#5C8A6A; --brass:#C9A453; --rule:rgba(237,228,207,.14); }
   html { background:var(--ebony); }
-  body { margin:0; padding:40px 16px 64px; color:var(--mid); font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; }
-  main { max-width:620px; margin:0 auto; }
-  h1 { color:var(--ivory); font-size:26px; font-weight:600; margin:0 0 4px; }
-  .version { color:var(--dim); font-size:14px; margin:0 0 28px; }
-  h2 { color:var(--ivory); font-size:17px; font-weight:600; margin:32px 0 8px; }
-  p { margin:0 0 12px; }
-  ol { padding-left:22px; margin:0 0 12px; }
+  body { margin:0; padding:36px 16px 56px; color:var(--mid); font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; }
+  main { max-width:600px; margin:0 auto; }
+  h1 { color:var(--ivory); font-size:26px; line-height:1.2; font-weight:600; margin:0 0 6px; }
+  .lede { margin:0 0 30px; }
+  .lede small { display:block; color:var(--dim); font-size:13px; margin-top:4px; }
+  h2 { color:var(--ivory); font-size:18px; font-weight:600; margin:34px 0 10px; }
+  p { margin:0 0 10px; }
+  ol { padding-left:22px; margin:0 0 10px; }
   li { margin:0 0 6px; }
   b { color:var(--ivory); font-weight:600; }
-  kbd { font:inherit; color:var(--ivory); background:var(--raised); border-radius:4px; padding:1px 6px; }
-  .drag { display:block; margin:18px 0 10px; text-align:center; padding:16px 20px; background:var(--raised); color:var(--ivory); text-decoration:none;
-          border:2px dashed var(--baize); border-radius:8px; font-size:18px; font-weight:600; cursor:grab; }
+  a { color:var(--ivory); text-underline-offset:2px; }
+  kbd { font:inherit; font-size:14px; color:var(--ivory); background:var(--raised); border-radius:4px; padding:1px 6px; white-space:nowrap; }
+  code { font:13px/1.5 ui-monospace,Menlo,Consolas,monospace; color:var(--ivory); background:var(--raised); border-radius:4px; padding:1px 5px; word-break:break-all; }
+  .drag { display:block; margin:14px 0 8px; padding:22px 20px; background:var(--raised); color:var(--ivory); text-decoration:none; text-align:center;
+          border:2px dashed var(--baize); border-radius:10px; font-size:20px; font-weight:600; cursor:grab; }
   .drag:active { cursor:grabbing; }
-  .copybox { display:flex; gap:8px; margin:10px 0 4px; }
-  textarea { flex:1; height:72px; background:var(--ebony); color:var(--dim); border:1px solid var(--rule); border-radius:6px; padding:8px; font:12px/1.4 ui-monospace,Menlo,Consolas,monospace; resize:vertical; }
-  button { font:inherit; background:var(--raised); color:var(--ivory); border:0; border-radius:6px; padding:8px 14px; cursor:pointer; align-self:flex-start; }
+  .drag:focus-visible, button:focus-visible, summary:focus-visible { outline:2px solid var(--baize); outline-offset:3px; }
+  .hint { color:var(--dim); font-size:14px; margin:0 0 6px; }
+  .bar { color:var(--dim); font-size:14px; margin:0 0 6px; }
+  .bar span { white-space:nowrap; }
+  details { border-top:1px solid var(--rule); }
+  details:last-of-type { border-bottom:1px solid var(--rule); }
+  summary { cursor:pointer; padding:12px 0; color:var(--ivory); font-weight:600; list-style:none; display:flex; align-items:center; gap:10px; }
+  summary::-webkit-details-marker { display:none; }
+  summary::before { content:""; width:7px; height:7px; border-right:2px solid var(--dim); border-bottom:2px solid var(--dim); transform:rotate(-45deg); transition:transform .15s; flex:0 0 auto; }
+  details[open] > summary::before { transform:rotate(45deg); }
+  .body { padding:0 0 16px; font-size:15px; }
+  .body p, .body ol { font-size:15px; }
+  .copybox { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 12px; }
+  textarea { flex:1 1 220px; height:64px; background:var(--ebony); color:var(--dim); border:1px solid var(--rule); border-radius:6px; padding:8px; font:12px/1.4 ui-monospace,Menlo,Consolas,monospace; resize:vertical; }
+  button { font:inherit; font-size:15px; background:var(--raised); color:var(--ivory); border:0; border-radius:6px; padding:8px 14px; cursor:pointer; align-self:flex-start; }
   button:hover { background:#35302A; }
-  button:focus-visible, .drag:focus-visible { outline:2px solid var(--baize); outline-offset:2px; }
-  .note { color:var(--dim); font-size:14px; }
-  hr { border:0; border-top:1px solid var(--rule); margin:32px 0; }
+  .mobile { display:none; margin:0 0 14px; padding:10px 12px; border-left:3px solid var(--brass); color:var(--mid); font-size:15px; }
+  .foot { margin-top:34px; color:var(--dim); font-size:14px; }
+  @media (pointer: coarse), (max-width: 540px) { .mobile { display:block; } }
+  @media (prefers-reduced-motion: reduce) { summary::before { transition:none; } }
 </style>
 </head>
 <body>
 <main>
-  <h1>Practice Video ToC bookmarklet</h1>
-  <p class="version">Version ${version}. Adds a clickable table of contents, keyboard shortcuts and optional MIDI control to the practice session videos.</p>
+  <h1>MK Practice Video ToC Bookmarklet</h1>
+  <p class="lede">A clickable table of contents, keyboard shortcuts and optional MIDI control for the practice session videos.
+    <small>Version ${version}</small></p>
 
-  <h2>1. Show your bookmarks bar</h2>
-  <p>Chrome: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> on Windows, <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> on Mac.
-     Safari: View → Show Favorites Bar.</p>
-
-  <h2>2. Add the bookmarklet</h2>
-  <p>Drag this link onto your bookmarks bar:</p>
+  <h2>Install</h2>
+  <p class="mobile">On a phone or tablet there is no bookmarks bar to drag to. Use "Copy the text instead" below, then paste it as a new bookmark's address.</p>
+  <p class="bar">Show your bookmarks bar first: Chrome <span><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd></span> (Windows) or <span><kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd></span> (Mac); Safari: View → Show Favorites Bar.</p>
   <a class="drag" href="${href}" onclick="return false" title="Drag me to the bookmarks bar">MK Video ToC bookmarklet</a>
-  <p class="note">Drag the box above onto the bookmarks bar. Clicking it here does nothing. The bookmark will be named "MK Video ToC bookmarklet".</p>
-  <p class="note">If dragging doesn't work (Safari, or some touchpads): copy the text below, add any bookmark, then edit it and paste this text in place of its address.
-     In Safari that is Bookmarks → Edit Bookmarks, right-click the bookmark, Edit Address.</p>
-  <div class="copybox">
-    <textarea id="code" readonly spellcheck="false">${escapeAttr(url)}</textarea>
-    <button id="copy" type="button">Copy</button>
-  </div>
+  <p class="hint">Drag the box onto your bookmarks bar. Clicking it here does nothing.</p>
 
-  <h2>3. Use it</h2>
+  <details id="copy-details">
+    <summary>Copy the text instead</summary>
+    <div class="body">
+      <p>Safari, and some touchpads, won't drag. Copy the text, bookmark any page, then edit that bookmark and paste the text in place of its address.</p>
+      <div class="copybox">
+        <textarea id="code" readonly spellcheck="false" aria-label="Bookmarklet text">${escapeAttr(url)}</textarea>
+        <button id="copy" type="button">Copy</button>
+      </div>
+      <p>Where to paste: Chrome, right-click the bookmark → Edit → URL. Firefox, right-click → Edit Bookmark → Location. Safari, Bookmarks → Edit Bookmarks, right-click → Edit Address.</p>
+    </div>
+  </details>
+
+  <h2>Use</h2>
   <ol>
     <li>Open a practice session post and press <b>play</b> on the video.</li>
     <li>Click the <b>MK Video ToC bookmarklet</b> bookmark. The contents panel appears on the right.</li>
-    <li>Click any entry to jump there. <kbd>Alt</kbd>+<kbd>→</kbd> / <kbd>Alt</kbd>+<kbd>←</kbd> (Option on Mac) step between timestamps.</li>
+    <li>Click any entry to jump there. <kbd>Alt</kbd>+<kbd>→</kbd> and <kbd>Alt</kbd>+<kbd>←</kbd> (Option on a Mac) step between timestamps.</li>
   </ol>
-  <p class="note">The bookmarklet only does anything on ${hostList}. It reads the tables of contents from a private list and sends nothing anywhere.
-     Safari does not support MIDI control; everything else works there.</p>
+  <p class="hint">MIDI control is under the panel's settings cog. It works in Chrome and Firefox; Safari has no MIDI support.</p>
 
-  <hr>
-  <p class="note">To update to a newer version, come back to this page and drag the link again, then delete the old bookmark. The panel's title shows its version when you hover over it.</p>
+  <details>
+    <summary>Updating</summary>
+    <div class="body">
+      <p>Come back here, drag the box again, and delete the old bookmark. Hover over "Contents" in the panel to see which version you have.</p>
+    </div>
+  </details>
+  <details>
+    <summary>Checking what you installed</summary>
+    <div class="body">
+      <p>The source code is public${repoUrl ? ' at <a href="' + repoUrl + '">' + repoUrl.replace(/^https?:\/\//, '') + '</a>' : ''}. The bookmarklet is that code with the table-of-contents location and the course site's hostname filled in, nothing else. To confirm:</p>
+      <ol>
+        <li>Edit the bookmark and copy its address into a file called <code>installed.txt</code>.</li>
+        <li>Its SHA-256 for version ${version} should be <code>${sha256}</code>. With Node installed:
+            <code>node -e "const c=require('crypto'),f=require('fs');console.log(c.createHash('sha256').update(f.readFileSync('installed.txt','utf8').trim()).digest('hex'))"</code></li>
+        <li>Or read it: <code>node -e "console.log(decodeURIComponent(require('fs').readFileSync('installed.txt','utf8').trim().slice(11)))"</code>
+            prints plain JavaScript identical to <code>dist/bookmarklet.shipped.js</code> from a build of the public repo with the same values.</li>
+      </ol>
+    </div>
+  </details>
 
-  <h2>Checking what you installed</h2>
-  <p class="note">The source code is public${repoUrl ? ' at <a href="' + repoUrl + '">' + repoUrl + '</a>' : ''}. The bookmarklet is that code with three values filled in
-     (the gist that holds the tables of contents, and the course site's hostname) and nothing else. To confirm:</p>
-  <ol class="note">
-    <li>Edit the bookmark, copy its address into a file called <code>installed.txt</code>.</li>
-    <li>Its SHA-256 should be <code style="word-break:break-all">${sha256}</code> for version ${version}. With Node installed:
-        <code>node -e "const c=require('crypto'),f=require('fs');console.log(c.createHash('sha256').update(f.readFileSync('installed.txt','utf8').trim()).digest('hex'))"</code></li>
-    <li>Or decode and read it: <code>node -e "console.log(decodeURIComponent(require('fs').readFileSync('installed.txt','utf8').trim().slice(11)))"</code>
-        prints plain JavaScript identical to <code>dist/bookmarklet.shipped.js</code> from a build of the public repo with the same values
-        (compare with <code>diff</code>).</li>
-  </ol>
+  <p class="foot">The bookmarklet only does anything on ${hostList}. It reads the tables of contents from a private list and sends nothing anywhere.</p>
 </main>
 <script>
-  document.getElementById('copy').addEventListener('click', function () {
-    var ta = document.getElementById('code');
-    var done = function () { this.textContent = 'Copied'; setTimeout(function (b) { b.textContent = 'Copy'; }, 1500, this); }.bind(this);
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done, function () { ta.select(); });
-    else { ta.select(); try { document.execCommand('copy'); done(); } catch (e) {} }
-  });
+  (function () {
+    var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    if (coarse) document.getElementById('copy-details').open = true;
+    document.getElementById('copy').addEventListener('click', function () {
+      var btn = this, ta = document.getElementById('code');
+      var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done, function () { ta.select(); });
+      else { ta.select(); try { document.execCommand('copy'); done(); } catch (e) {} }
+    });
+  })();
 </script>
 </body>
 </html>
