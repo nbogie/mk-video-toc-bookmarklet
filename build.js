@@ -120,7 +120,10 @@ function installPage(url, version, hosts, sha256, repo) {
   .drag:focus-visible, button:focus-visible, summary:focus-visible { outline:2px solid var(--baize); outline-offset:3px; }
   .hint { color:var(--dim); font-size:14px; margin:0 0 6px; }
   .bar { color:var(--dim); font-size:14px; margin:0 0 6px; }
-  .bar span { white-space:nowrap; }
+  .bar-list { list-style:none; margin:0 0 10px; padding:0; color:var(--dim); font-size:14px; }
+  .bar-list li { margin:0 0 4px; display:grid; grid-template-columns:9.5em 1fr; column-gap:10px; }
+  .bar-list b { color:var(--mid); font-weight:600; }
+  @media (max-width: 420px) { .bar-list li { grid-template-columns:1fr; } }
   details { border-top:1px solid var(--rule); }
   details:last-of-type { border-bottom:1px solid var(--rule); }
   summary { cursor:pointer; padding:12px 0; color:var(--ivory); font-weight:600; list-style:none; display:flex; align-items:center; gap:10px; }
@@ -147,7 +150,12 @@ function installPage(url, version, hosts, sha256, repo) {
 
   <h2>Install</h2>
   <p class="mobile">On a phone or tablet there is no bookmarks bar to drag to. Use "Copy the text instead" below, then paste it as a new bookmark's address.</p>
-  <p class="bar">Show your bookmarks bar first. Chrome on a Mac: View → Always Show Bookmarks Bar. Chrome on Windows: the ⋮ menu → Bookmarks and lists → Show bookmarks bar. Safari: View → Show Favorites Bar.</p>
+  <p class="bar">Show your bookmarks bar first:</p>
+  <ul class="bar-list">
+    <li><b>Chrome, Mac</b> View → Always Show Bookmarks Bar</li>
+    <li><b>Chrome, Windows</b> ⋮ menu → Bookmarks and lists → Show bookmarks bar</li>
+    <li><b>Safari</b> View → Show Favorites Bar</li>
+  </ul>
   <a class="drag" href="${href}" onclick="return false" title="Drag me to the bookmarks bar">MK Video ToC bookmarklet</a>
   <p class="hint">Drag the box onto your bookmarks bar. Clicking it here does nothing.</p>
 
@@ -181,14 +189,8 @@ function installPage(url, version, hosts, sha256, repo) {
   <details>
     <summary>Checking what you installed</summary>
     <div class="body">
-      <p>The source code is public${repoUrl ? ' at <a href="' + repoUrl + '">' + repoUrl.replace(/^https?:\/\//, '') + '</a>' : ''}. The bookmarklet is that code with the table-of-contents location and the course site's hostname filled in, nothing else. To confirm:</p>
-      <ol>
-        <li>Edit the bookmark and copy its address into a file called <code>installed.txt</code>.</li>
-        <li>Its SHA-256 for version ${version} should be <code>${sha256}</code>. With Node installed:
-            <code>node -e "const c=require('crypto'),f=require('fs');console.log(c.createHash('sha256').update(f.readFileSync('installed.txt','utf8').trim()).digest('hex'))"</code></li>
-        <li>Or read it: <code>node -e "console.log(decodeURIComponent(require('fs').readFileSync('installed.txt','utf8').trim().slice(11)))"</code>
-            prints plain JavaScript identical to <code>dist/bookmarklet.shipped.js</code> from a build of the public repo with the same values.</li>
-      </ol>
+      <p>The source code is public${repoUrl ? ' at <a href="' + repoUrl + '">' + repoUrl.replace(/^https?:\/\//, '') + '</a>' : ''}, and the bookmark is that code with the location of the tables of contents and the course site's name filled in, nothing else.</p>
+      <p>${repoUrl ? '<a href="' + repoUrl + '/blob/main/docs/VERIFYING.md">How to confirm that for yourself</a>' : 'The repository'} is described there in words, with no commands to copy. A check is only worth something when the reference comes from somewhere other than this page.</p>
     </div>
   </details>
 

@@ -60,9 +60,9 @@ with the course community.
 
 ## Verifying an installed bookmarklet
 
-The install page shows the SHA-256 of the exact bookmarklet text and explains how to decode it
-to plain JavaScript, which should be identical to `dist/bookmarklet.shipped.js` from a build of
-this repository with the same `.env` values.
+See `docs/VERIFYING.md`. It describes, without commands to paste, how to confirm that an installed
+bookmark is identical to what this repository builds. The build also writes `dist/bookmarklet.sha256`
+for publishing alongside releases.
 
 ## Real data
 
