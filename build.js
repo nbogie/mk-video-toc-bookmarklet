@@ -198,7 +198,7 @@ function installPage(url, version, hosts, sha256, repo) {
     </div>
   </details>
 
-  <p class="foot">The bookmarklet only does anything on ${hostList}. It reads the tables of contents from a private list and sends nothing anywhere.${repoUrl ? '<br>Source code: <a href="' + repoUrl + '">' + repoUrl.replace(/^https?:\/\//, '') + '</a>' : ''}</p>
+  <p class="foot">The bookmarklet only does anything on ${hostList}. It reads the tables of contents from a private list and does not collect your data.${repoUrl ? '<br>Source code: <a href="' + repoUrl + '">' + repoUrl.replace(/^https?:\/\//, '') + '</a>' : ''}</p>
 </main>
 <script>
   (function () {

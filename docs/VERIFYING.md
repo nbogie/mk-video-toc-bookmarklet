@@ -32,7 +32,7 @@ command from a web page.
 The bookmark text is the source code with spaces and symbols escaped for a URL. Any URL-decoding tool turns
 it back into readable JavaScript, which matches `dist/bookmarklet.shipped.js` from the build. The code is
 about 1,000 lines, unminified and commented in the source, and the repository's `CLAUDE.md` explains the
-rules it follows: it only runs on the course site, loads no code from anywhere, and sends nothing anywhere.
+rules it follows: it only runs on the course site, loads no code from anywhere, and does not collect your data.
 
 ## What this does and doesn't prove
 

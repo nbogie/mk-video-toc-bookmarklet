@@ -22,7 +22,7 @@ A bookmarklet runs with the authority of whatever page it is clicked on. This on
 - does nothing at all unless the page is `https://` on the configured course host;
 - loads no code from anywhere — it is a single static script with zero runtime dependencies;
 - renders gist content as text only, never as HTML;
-- makes only unauthenticated, read-only GET requests to GitHub and sends nothing anywhere;
+- makes only unauthenticated, read-only GET requests to GitHub; it does not collect your data (GitHub sees the request, as with any web fetch);
 - is distributed unminified, so what you install is byte-for-byte what is in `src/`.
 
 See `CLAUDE.md` for the full rules and the pre-release checklist.
