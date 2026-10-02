@@ -177,7 +177,7 @@ function installPage(url, version, hosts, sha256, repo) {
   <h2>Use</h2>
   <ol>
     <li>Open a practice session post and press <b>play</b> on the video.</li>
-    <li>Click the <b>MK Video ToC bookmarklet</b> bookmark. The contents panel appears on the right.</li>
+    <li>Click <b>MK Video ToC bookmarklet</b> in your browser's bookmarks bar (the bookmark you installed above, not the dashed box on this page). The contents panel appears on the right.</li>
     <li>Click any entry to jump there. <kbd>Alt</kbd>+<kbd>→</kbd> and <kbd>Alt</kbd>+<kbd>←</kbd> (Option on a Mac) step between timestamps.</li>
     <li>Drag the panel's title bar to move it, or its left or bottom edge to resize it. The <b>–</b> button minimises it.</li>
   </ol>
