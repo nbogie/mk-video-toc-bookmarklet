@@ -328,10 +328,9 @@ Nothing started yet. Constraints and facts to verify first (don't assume):
 * Suggested first step: a read-only survey on a real device (what the DOM looks like, whether the bookmarklet runs
   at all, what breaks), recorded here, before any code.
 
-### Survey result: Chrome on Android (done 2026-10-06, Pixel 9a, Android 17, Chrome 154, 412x924 CSS px)
-Method: USB debugging + desktop `chrome://inspect`, the built `dist/bookmarklet.js` pasted into the phone tab's
-console; screenshots via `adb exec-out screencap -p` (adb is installed via Homebrew; the phone is authorised for
-this Mac). Repeat that way; no code change was needed to run the survey.
+### Survey result: Chrome on Android (done 2026-10-06 on a real phone, ~412px-wide viewport)
+Method: the built `dist/bookmarklet.js` pasted into the page's console via remote debugging; no code change was
+needed. (Device details and the debugging setup are in the private companion repo's CLAUDE.md.)
 * **It works unmodified.** Panel appears, waits through the pre-play thumbnail, finds the Wistia id once the video
   starts, loads the gist, renders the nested list with the live current-section rail, and tapping an entry seeks.
   Same page structure and same player as desktop: the fullscreen element is the same IFRAME (desktop code already
@@ -345,7 +344,6 @@ this Mac). Repeat that way; no code change was needed to run the survey.
 * **Fullscreen:** panel hidden as on desktop. With no keyboard/MIDI there is currently no way to trigger next/prev or
   the flash in fullscreen on a phone, so a touch trigger (or a visible mini control) would be needed for fullscreen
   to be useful.
-* **Launching the bookmark:** user's first attempt (type name in address bar, tap the result) did nothing; cause not
-  yet established — likely the bookmark's javascript: URL was not created intact on the phone, or the tapped result
-  was a search suggestion rather than the bookmark. Needs a second, careful attempt (sync from desktop Chrome is the
-  simplest way to get the URL onto the phone intact).
+* **Launching the bookmark:** a first attempt (type its name in the address bar, tap the result) did nothing; cause
+  not yet established — either the javascript: URL was not created intact on the phone, or the tapped result was a
+  search suggestion rather than the bookmark. Needs a second, careful attempt.
