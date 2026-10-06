@@ -327,3 +327,25 @@ Nothing started yet. Constraints and facts to verify first (don't assume):
 * The typing-safety rules apply unchanged (soft keyboards, contenteditable editors on mobile).
 * Suggested first step: a read-only survey on a real device (what the DOM looks like, whether the bookmarklet runs
   at all, what breaks), recorded here, before any code.
+
+### Survey result: Chrome on Android (done 2026-10-06, Pixel 9a, Android 17, Chrome 154, 412x924 CSS px)
+Method: USB debugging + desktop `chrome://inspect`, the built `dist/bookmarklet.js` pasted into the phone tab's
+console; screenshots via `adb exec-out screencap -p` (adb is installed via Homebrew; the phone is authorised for
+this Mac). Repeat that way; no code change was needed to run the survey.
+* **It works unmodified.** Panel appears, waits through the pre-play thumbnail, finds the Wistia id once the video
+  starts, loads the gist, renders the nested list with the live current-section rail, and tapping an entry seeks.
+  Same page structure and same player as desktop: the fullscreen element is the same IFRAME (desktop code already
+  reaches into it), i.e. element fullscreen, not Android's native video fullscreen — overlays are possible in
+  fullscreen on Android. (iOS still unverified; expect native fullscreen there.)
+* **Broken on touch:** moving the panel, both resize grips, flash drag and hover-hold — all mouse-event-only, as
+  expected. Nothing errored; they just do nothing.
+* **Layout:** the panel renders legibly (type size and contrast fine) but at ~300px wide on a 412px viewport it
+  covers three quarters of the video. Collapsed, the header sits over the page's own heading. The real mobile work is
+  layout, not rendering.
+* **Fullscreen:** panel hidden as on desktop. With no keyboard/MIDI there is currently no way to trigger next/prev or
+  the flash in fullscreen on a phone, so a touch trigger (or a visible mini control) would be needed for fullscreen
+  to be useful.
+* **Launching the bookmark:** user's first attempt (type name in address bar, tap the result) did nothing; cause not
+  yet established — likely the bookmark's javascript: URL was not created intact on the phone, or the tapped result
+  was a search suggestion rather than the bookmark. Needs a second, careful attempt (sync from desktop Chrome is the
+  simplest way to get the URL onto the phone intact).
