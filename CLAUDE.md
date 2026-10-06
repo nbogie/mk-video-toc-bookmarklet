@@ -282,3 +282,48 @@ Requires Node 18+ (uses `node --test`).
   just the same, so there's nothing to gain by it. Only available via the Gist API path (raw fallback has no file list).
 * Startup: if the panel already exists, exit. If no player yet, show a "press play" panel and poll (never auto-plays).
   Errors after load: `console.error('[toc-bookmarklet]', e)` + one alert with the real message (not a generic one).
+
+---
+
+## Status and next work (written 2026-10-06, before a context compaction)
+
+### Where everything is
+* **This repo (public)**: all code. Clean tree, pushed. Build id scheme in place (`version+hash`, `-dirty` refused by
+  deploy). Latest deploy of the install page = head of `main`; check with `dist/version.txt` vs the "Version" line
+  on the page.
+* **Private companion** `mk-video-toc-bookmarklet-private-resources` (local folder
+  `../mk-practice-video-toc-bookmarklets`): real fixtures + private tests (`npm test` there), `.env` values, audit,
+  `docs/installation-instructions.md` (forum text), README of private facts (session ids, install page URL).
+* **Install page**: live on Netlify, published only via `npm run deploy` from this repo with `.env` present.
+* Forum post not yet made; no GitHub release yet (optional; see VERIFYING.md).
+* Backlog: `docs/backlog.md` (MIDI playback speed; same-tab video switching — currently advised "reload the tab").
+
+### Working rules learned (keep)
+* Stage only the files you touched (`git add <files>`), never `git add -A` — the user keeps their own untracked
+  notes in the tree.
+* Never run headless Chrome without a hard `timeout` and in the foreground; a hung instance crash-looped for 38 min
+  and pegged the user's CPU once. Ask before using it again. Prefer reasoning from the DOM/CSS, or `--dump-dom`.
+* Commit before deploy (deploy refuses dirty builds). Deploy after any install-page copy change.
+* Every bit of copy that names the thing: the page/title is "MK Practice Video ToC Bookmarklet"; the bookmark the
+  user drags is named "MK Video ToC bookmarklet"; the panel header is "Contents". Say "MIDI note", not "key".
+
+### NEXT: a version for Chrome on Android / iOS — TOP PRIORITY: do not break desktop
+Nothing started yet. Constraints and facts to verify first (don't assume):
+* Desktop behaviour must be unchanged byte-for-byte in spirit: same code path, same tests (19 public + 19 private),
+  same install flow. Prefer feature-detecting touch/coarse-pointer at runtime over a separate build. If a separate
+  mobile build becomes necessary, it must be an additional artifact, never a change to the desktop one.
+* How bookmarklets run on mobile: Chrome Android has no bookmarks bar — users save the bookmark, then type its name
+  in the address bar on the target page and tap it. iOS Safari: bookmark any page, edit its address. iOS Chrome: same
+  via its bookmark editor (verify). The install page already opens the copy method on coarse pointers; the copy text
+  is the same bookmarklet.
+* The page itself may differ on mobile: Thinkific may serve a different layout; Wistia may use the native player, and
+  **iOS fullscreen video is native, so no overlay (flash, panel) can appear over it** — in-page (non-fullscreen)
+  playback is the only mode where the panel is useful on iOS. Verify on a real device before designing.
+* Input: everything today is mouse-only (drag/resize via mousedown/mousemove; flash drag; hover-hold). Touch needs
+  pointer events or touch handlers, bigger hit targets (≥44px), no hover dependence. Keyboard shortcuts are moot;
+  Web MIDI exists on Chrome Android, not iOS.
+* Layout: the panel is 300px min-width, right-anchored, 78vh — on a phone it should probably become a bottom sheet or
+  full-width panel; the flash should not rely on `top:11%` over a tiny video.
+* The typing-safety rules apply unchanged (soft keyboards, contenteditable editors on mobile).
+* Suggested first step: a read-only survey on a real device (what the DOM looks like, whether the bookmarklet runs
+  at all, what breaks), recorded here, before any code.
