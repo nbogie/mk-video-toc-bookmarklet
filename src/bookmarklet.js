@@ -36,9 +36,11 @@
   // Defaults: top four keys of a standard 61-key (C2-C7) keyboard.
   // copyTime is an authoring aid and starts unassigned (null); any action can be
   // unassigned with its clear button.
-  const DEFAULT_MIDI_NOTES = { next: 96, prev: 95, pause: 94, where: 93, copyTime: null }; // C7, B6, A#6, A6
-  const MIDI_ACTIONS = ['next', 'prev', 'pause', 'where', 'copyTime'];
-  const MIDI_ACTION_LABELS = { next: 'Next timestamp', prev: 'Previous timestamp', pause: 'Pause', where: 'Where am I?', copyTime: 'Copy timestamp' };
+  // speed, back10 and fwd10 are newer and also start unassigned, so existing setups gain no surprise bindings.
+  const DEFAULT_MIDI_NOTES = { next: 96, prev: 95, pause: 94, where: 93, back10: null, fwd10: null, speed: null, copyTime: null }; // C7, B6, A#6, A6
+  const MIDI_ACTIONS = ['next', 'prev', 'pause', 'where', 'back10', 'fwd10', 'speed', 'copyTime'];
+  const MIDI_ACTION_LABELS = { next: 'Next timestamp', prev: 'Previous timestamp', pause: 'Pause', where: 'Where am I?', back10: 'Back 10 seconds', fwd10: 'Forward 10 seconds', speed: 'Speed \u00D71 / \u00D72', copyTime: 'Copy timestamp' };
+  const SKIP_SECONDS = 10;
   const MIDI_NOTES_STORAGE_KEY = 'toc-bookmarklet-midi-notes';
   const MIDI_ENABLED_STORAGE_KEY = 'toc-bookmarklet-midi-enabled';
   const FLASH_ENABLED_STORAGE_KEY = 'toc-bookmarklet-flash-enabled';
@@ -413,7 +415,10 @@
           else if (note === midiNotes.prev) seekPrev();
           else if (note === midiNotes.pause) togglePause();
           else if (note === midiNotes.where) showWhere();
-          else if (midiNotes.copyTime !== null && note === midiNotes.copyTime) copyTimestamp();
+          else if (note === midiNotes.back10) skipBy(-SKIP_SECONDS);
+          else if (note === midiNotes.fwd10) skipBy(SKIP_SECONDS);
+          else if (note === midiNotes.speed) toggleSpeed();
+          else if (note === midiNotes.copyTime) copyTimestamp();
         }
 
         // ---- Authoring: copy current timestamp (H:MM:SS, matching the TOC files) ----
@@ -454,6 +459,28 @@
           if (!v) return;
           if (v.paused) { v.play(); flash('\u25B6 Play'); }
           else { v.pause(); flash('\u23F8 Paused'); }
+        }
+
+        // Skip back/forward by a fixed number of seconds. Leaves play/pause state alone.
+        function skipBy(delta) {
+          var v = findV(document);
+          if (!v) return;
+          var max = isFinite(v.duration) ? v.duration : Infinity;
+          v.currentTime = Math.min(max, Math.max(0, v.currentTime + delta));
+          var n = Math.abs(delta);
+          flash((delta < 0 ? 'Back ' : 'Forward ') + n + ' seconds', null, null, delta < 0 ? '\u2190' : '\u2192');
+          if (typeof markNow === 'function') markNow();
+        }
+
+        // Toggle playback speed between x1 and x2 on the <video> itself. Wistia's own speed menu
+        // keeps its own idea of the rate and may show a stale value until touched; accepted.
+        // Leaves play/pause state alone.
+        function toggleSpeed() {
+          var v = findV(document);
+          if (!v) return;
+          var rate = v.playbackRate >= 1.5 ? 1 : 2;
+          v.playbackRate = rate;
+          flash('Speed: \u00D7' + rate);
         }
 
         // ---- MIDI learn ----

@@ -11,7 +11,7 @@ The tables of contents are community-written Markdown files hosted in a GitHub g
 - Alt/Option + Left/Right step to the previous/next timestamp. `c` (fullscreen only) shows the
   current section.
 - Optional Web MIDI control: map notes on a connected MIDI keyboard to next/previous/pause/"where
-  am I?"/copy-timestamp.
+  am I?"/back or forward 10 seconds/speed ×1–×2/copy-timestamp.
 - A flash message over the video on every jump, also in fullscreen.
 - An "Other sessions" list linking to the other videos that have a table of contents.
 

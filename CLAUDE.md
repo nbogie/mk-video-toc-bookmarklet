@@ -261,8 +261,11 @@ Requires Node 18+ (uses `node --test`).
 * Authoring (first of an eventual "advanced" settings group): "Copy current timestamp" button copies `H:MM:SS`
   of the current position to the clipboard and shows it in a readonly field (fallback when clipboard is refused,
   which browsers may do for non-gesture triggers such as MIDI). MIDI-learnable as `copyTime`, **unassigned by default**.
+* Back/forward 10 seconds (`back10`/`fwd10`) and a speed toggle ×1/×2 (`speed`, sets `video.playbackRate` directly;
+  Wistia's own speed menu may show a stale value, accepted) — all three MIDI-learnable, **unassigned by default**,
+  none of them starts or stops the video. Added 2026-10-09.
 * Every MIDI action has a ✕ clear button to unassign it (stored as `null`).
-* MIDI learn: "Next timestamp"/"Previous timestamp"/"Pause"/"Where am I?"/"Copy timestamp" rows in the panel; click one, press a key, mapping is saved to localStorage (`toc-bookmarklet-midi-notes`). Esc or a second click cancels. Clicking learn auto-enables MIDI.
+* MIDI learn: "Next timestamp"/"Previous timestamp"/"Pause"/"Where am I?"/"Back 10 seconds"/"Forward 10 seconds"/"Speed ×1 / ×2"/"Copy timestamp" rows in the panel; click one, press a key, mapping is saved to localStorage (`toc-bookmarklet-midi-notes`). Esc or a second click cancels. Clicking learn auto-enables MIDI.
 * Flash message on every seek (checkbox to disable): `→`/`←` direction arrow (from actual travel, so TOC clicks get it
   too) in its own column to the left of both lines, then **title** with the timestamp as a smaller, dimmer aside; if the
   entry has a parent, the parent's title is a smaller line above (one level only, never the grandparent).
@@ -296,7 +299,7 @@ Requires Node 18+ (uses `node --test`).
   `docs/installation-instructions.md` (forum text), README of private facts (session ids, install page URL).
 * **Install page**: live on Netlify, published only via `npm run deploy` from this repo with `.env` present.
 * Forum post not yet made; no GitHub release yet (optional; see VERIFYING.md).
-* Backlog: `docs/backlog.md` (MIDI playback speed; same-tab video switching — currently advised "reload the tab").
+* Backlog: `docs/backlog.md` (same-tab video switching — currently advised "reload the tab").
 
 ### Working rules learned (keep)
 * Stage only the files you touched (`git add <files>`), never `git add -A` — the user keeps their own untracked
