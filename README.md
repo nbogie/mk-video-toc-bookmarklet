@@ -1,4 +1,4 @@
-# mk-video-toc-bookmarklet
+# mk-video-toc-bookmarklet-public
 
 A browser bookmarklet that adds a clickable table of contents to the embedded Wistia videos on a
 Thinkific-hosted course site, with keyboard shortcuts and optional MIDI-keyboard control.

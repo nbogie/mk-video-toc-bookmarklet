@@ -1,5 +1,5 @@
 {
-  "name": "mk-video-toc-bookmarklet",
+  "name": "mk-video-toc-bookmarklet-public",
   "version": "0.1.1",
   "private": true,
   "description": "Bookmarklet adding a timestamped table of contents, keyboard and MIDI navigation to Wistia course videos",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nbogie/mk-video-toc-bookmarklet"
+    "url": "https://github.com/nbogie/mk-video-toc-bookmarklet-public"
   },
   "license": "MIT"
 }

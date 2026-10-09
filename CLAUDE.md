@@ -79,7 +79,7 @@ a security boundary. Rules:
 * **The gist id and course host are build-time configuration, not source.** `src/` holds `__GIST_USER__`/`__GIST_ID__`/
   `__ALLOWED_HOSTS__` placeholders;
   `build.js` injects them from `.env`/environment. Never hardcode them back. The public repo
-  (`mk-video-toc-bookmarklet`) was created fresh on 2026-10-02 so its history never contained them; the original
+  (`mk-video-toc-bookmarklet-public`, renamed from `mk-video-toc-bookmarklet` on 2026-10-09) was created fresh on 2026-10-02 so its history never contained them; the original
   working repo became the private companion (`mk-video-toc-bookmarklet-private-resources`) and keeps the real
   fixtures, the audit, and the `.env` values.
 * **Build-time deps are minimal and pinned.** Only `terser` (dev). `package-lock.json` carries sha512 integrity for
