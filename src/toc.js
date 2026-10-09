@@ -31,11 +31,13 @@ function stripBullet(t) {
   return t.replace(/^\s*[-*+]\s+/, '');
 }
 
-// Tidy a title fragment: drop markdown emphasis, "@" markers, empty parens, and
-// stray separators left where a timestamp was cut out.
+// Tidy a title fragment: drop markdown emphasis and leading heading markers, "@"
+// markers, empty parens, and stray separators left where a timestamp was cut out.
+// A "#" inside the text is kept: it may be a sharp ("F#") or a number ("case #3").
 function cleanTitle(t) {
   return t
-    .replace(/[*#]/g, '')
+    .replace(/^\s*#+\s*/, '')
+    .replace(/\*/g, '')
     .replace(/@/g, '')
     .replace(/\(\s*\)/g, '')
     .replace(/\s+/g, ' ')

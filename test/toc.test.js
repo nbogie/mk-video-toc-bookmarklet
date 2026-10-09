@@ -197,3 +197,10 @@ test('prevIndex restarts current section, or goes back one when near its start',
   assert.equal(prevIndex(parseEntries('0:10 X'), 5, 2), 0, 'before first entry: go to first');
   assert.equal(prevIndex([], 5, 2), -1);
 });
+
+test('a "#" inside a title is kept (sharps, numbers); leading heading markers are stripped', () => {
+  const e = parseEntries('## Evidence\n  * 0:10 Suspect #3 interviewed\n  * 0:20 **Cell C# searched**');
+  assert.equal(e[0].title, 'Evidence');
+  assert.equal(e[1].title, 'Suspect #3 interviewed');
+  assert.equal(e[2].title, 'Cell C# searched');
+});
